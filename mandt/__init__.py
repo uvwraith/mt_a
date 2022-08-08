@@ -1,7 +1,10 @@
 from flask import Flask
 from flask_mail import Mail
 
-app = Flask(__name__, static_folder='./static')
+from mandt.main.routes import page_not_found
+
+app = Flask(__name__)
+app.register_error_handler(404, page_not_found)
 
 app.secret_key = "edeacda59ac156398eb419c6b1ba496a5b8d0250cbf6f09299"
 

